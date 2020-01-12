@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<meta charset="utf-8"/>
+<title>Development — GSForge 0.0.1 documentation</title>
+<meta content="Short description for html meta description." name="description"/>
+<meta content="Tyler Biggs" name="author"/>
+<!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
+<script>
+    WebFont.load({
+      google: {
+        families: ['Source Sans Pro']
+      }
+    });
+  </script>
+<!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<link href="_static/css/main.css" rel="stylesheet"/>
+<link href="_static/nbsite.css" rel="stylesheet"/>
+<!-- Scripts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript">
+</script>
+<script src="_static/js/main.js"></script>
+<script src="_static/nbsite.js"></script>
+<script src="_static/require.js"></script>
+<!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<link href="_static/images/favicon.ico" rel="icon" type="image/png"/>
+<!-- Canonical
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<link href="/Development.html" rel="canonical">
+</link></head>
+<body class="">
+<header class="navigation">
+<div class="wrapper">
+<a class="logo" href="index.html">
+<img alt="Logo" src="_static/images/logo.png"/>
+</a>
+<a class="navigation-menu logo-text" href="index.html">GSForge</a>
+<a class="navigation-menu-button" href="javascript:void(0)" id="js-mobile-menu">Menu</a>
+<nav>
+<ul class="navigation-menu show" id="js-navigation-menu">
+<li class="nav-link"><a href="Welcome.html">Welcome</a></li>
+<li class="nav-link"><a href="user_guide/index.html">User Guide</a></li>
+<li class="nav-link"><a href="Reference_Manual/index.html">API</a></li>
+<li class="nav-link"><a href="#">Developer Guide</a></li>
+<li class="nav-link"><a href="About.html">About</a></li>
+<li class="nav-link"><div style="display:inline-block;vertical-align: middle;"><div class="search-bar"><form action="search.html" method="get" role="search">
+<input name="q" placeholder="Search" type="search"/>
+<button type="submit">
+<img alt="Search Icon" src="https://raw.githubusercontent.com/thoughtbot/refills/master/source/images/search-icon-black.png"/>
+</button>
+</form>
+</div></div></li>
+</ul>
+</nav>
+</div>
+</header>
+<!-- MAIN BODY OF DOCS –––––––––––––––––– -->
+<div class="docs section">
+<div id="hacketyhackhack"> <!-- style="width:20%;margin-right: 100px;"> --> <!--style="display: none;"> style="display:none;"> -->
+<div class="toc" style="width:15%; margin-right:20px;">
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Reference_Manual/index.html">API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="About.html">About</a></li>
+</ul>
+</div>
+</div>
+<div class="content"> <!-- style="max-width:80%;margin-left:auto;margin-right: auto;">-->
+<div class="section" id="development">
+<h1>Development<a class="headerlink" href="#development" title="Permalink to this headline">¶</a></h1>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Travis-CI">Travis CI<a class="anchor-link" href="#Travis-CI">¶</a></h3><p>Travis CI is activated upon every push to the master branch.
+Then, via the <code>.travis.yml</code> file:</p>
+<ul>
+<li>Demo data is updated if needed.</li>
+<li>The dockerfiles are built and pushed if the package installs correctly.</li>
+<li>The notebook files are tested, and if no cells fail to run the documentation is updated.</li>
+</ul>
+<h3 id="nbsite-&amp;-Documentation">nbsite &amp; Documentation<a class="anchor-link" href="#nbsite-&amp;-Documentation">¶</a></h3><p>You can test if all of the example notebooks run with <a href="https://github.com/pyviz-dev/nbsmoke">nbsmoke</a> (this is what the travis ci will do) to check if they all run.</p>
+<div class="highlight"><pre><span></span>pytest --nbsmoke-run examples/*.ipynb
+pytest --nbsmoke-run examples/user_guide/*.ipynb
+pytest --nbsmoke-run examples/user_guide/plotting_guide/*.ipynb
+</pre></div>
+<p>The documentation is built using travis ci integration.</p>
+<p><strong>Skipping Notebooks</strong></p>
+<p><code>nbsite</code> finds notebooks via the following. (<a href="https://github.com/pyviz-dev/nbsite/blob/master/nbsite/cmd.py">source</a>)</p>
+<div class="highlight"><pre><span></span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">paths</span><span class="p">[</span><span class="s1">'doc'</span><span class="p">],</span> <span class="s1">'**'</span><span class="p">,</span> <span class="s1">'*.ipynb'</span><span class="p">),</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+</pre></div>
+<p>Run this from the terminal to see the list of notebooks.</p>
+<div class="highlight"><pre><span></span>python -c <span class="s2">"import glob, os, pprint; pprint.pprint(list(glob.glob(os.path.join('examples', '**', '*.ipynb'), recursive=True)))"</span>
+</pre></div>
+<p>Normally notebooks are viewed by an restructured text directive.
+These container files are constructed automatically during the travis build via:</p>
+<div class="highlight"><pre><span></span>nbsite generate-rst --org SystemsGenetics --project-name GSForge
+</pre></div>
+<p>If a notebook should not be run by travis for whatever reason, 
+the containing .rst file should be generated using the above command.
+Then the directive can be modified by setting the skip_execute option to <code>True</code>.</p>
+<pre><code>.. notebook:: GSForge ../relative/path/to/notebook.ipynb
+    :offset: 0
+    :skip_execute: True</code></pre>
+<p>The <code>offset</code> option controls how many cells are to be skipped.
+This is there since the default uses the notebook name as the displayed title.</p>
+<h3 id="Using-Docker">Using Docker<a class="anchor-link" href="#Using-Docker">¶</a></h3><p>The docker images used by <code>GSForge</code> are based on the <a href="https://jupyter-docker-stacks.readthedocs.io/en/latest/index.html">Jupyter Docker Stacks</a>.</p>
+<p><strong><em>Update the image</em></strong></p>
+<div class="highlight"><pre><span></span>docker pull systemsgenetics/gsforge_interactive:latest
+</pre></div>
+<p>To run <code>GSForge</code> using a jupyter notebook from a docker image:</p>
+<p><strong><em>Jupyter Lab</em></strong></p>
+<div class="highlight"><pre><span></span>docker run --rm -p <span class="m">10000</span>:8888 -e <span class="nv">JUPYTER_ENABLE_LAB</span><span class="o">=</span>yes -v <span class="s2">"</span><span class="nv">$PWD</span><span class="s2">"</span>:/home/jovyan/work systemsgenetics/gsforge_interactive:latest
+</pre></div>
+<p><strong><em>Jupyter Notebook</em></strong></p>
+<div class="highlight"><pre><span></span>docker run -p <span class="m">8888</span>:8888 -v <span class="s2">"</span><span class="nv">$PWD</span><span class="s2">"</span>:/home/jovyan/work systemsgenetics/gsforge_interactive:latest
+</pre></div>
+<p>Both of the above commands mount the local directory to the <code>"/home/jovyan/work"</code> within the docker image.
+("jovyan" is the default user name within the jupyter docker stack container.)</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<hr/>
+</div>
+</div>
+</div>
+<hr class="docutils">
+<p><a class="reference external" href="https://raw.githubusercontent.com/SystemsGenetics/GSForge/master/examples/Development.ipynb">Right click to download this notebook from GitHub.</a></p>
+</hr></div>
+</div>
+</div>
+<!-- END MAIN BODY OF DOCS ––––––––––––– -->
+<footer class="footer">
+<div class="footer-links">
+<ul>
+<li><span class="footer-title">Links</span></li>
+<li><a href="Welcome.html">Welcome</a></li>
+<li><a href="user_guide/index.html">User Guide</a></li>
+<li><a href="Reference_Manual/index.html">API</a></li>
+<li><a href="#">Developer Guide</a></li>
+<li><a href="About.html">About</a></li>
+</ul>
+<ul>
+<li><span class="footer-title">Join Us</span></li>
+<li><a href="https://github.com/SystemsGenetics/GSForge">Github</a></li>
+</ul>
+<ul class="copyright">
+<li>2019 Tyler Biggs</li>
+</ul>
+</div>
+</footer>
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-61554933-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- MathJax Config -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>
